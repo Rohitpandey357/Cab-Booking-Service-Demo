@@ -28,19 +28,33 @@ public class CabServiceImpl implements CabService<Driver> {
     }
 
     /*
-     * This function finds the drivers which are less than 5 unit distance
-     * and return a list of all those drivers.
+     * This function finds the drivers which are less than 5 unit distance and prints them
      */
     public List<Driver> findRide(String userName, Pair<Float, Float> source, 
                                     Pair<Float, Float> destination, Map<String, Driver> drivers) {
         
         List<Driver> availableDrivers = new ArrayList<>();
-        for (Map.Entry<String, Driver> entry : drivers.entrySet()) {
-            if(distanceBetweenLocations(source, entry.getValue().getLocation()) <= MAXIMUM_RANGE_FOR_A_DRIVER_TO_BE_AVAILABLE) {
-                availableDrivers.add(entry.getValue());
+        try {
+            for (Map.Entry<String, Driver> entry : drivers.entrySet()) {
+                if(distanceBetweenLocations(source, entry.getValue().getLocation()) <= MAXIMUM_RANGE_FOR_A_DRIVER_TO_BE_AVAILABLE) {
+                    availableDrivers.add(entry.getValue());
+                }
             }
+            
+            if (availableDrivers.size() == 0) {
+                System.out.println("No ride found [Since all the driver are more than 5 units away from user]");
+            } else {
+                for (int driver = 0; driver < availableDrivers.size(); driver++) {
+                    System.out.println(availableDrivers.get(driver).getName() + " [" + 
+                    availableDrivers.get(driver).getAvailabity() + "]");
+                }
+            }
+    
+            rides.put(userName, new Ride(userName, Null, source, destination));
+        } catch (Exception e) {
+            System.out.println("Something went wrong. Please try again");
+            e.printStackTrace();
         }
-        rides.put(userName, new Ride(userName, Null, source, destination));
         return availableDrivers;
     }
     
@@ -62,6 +76,9 @@ public class CabServiceImpl implements CabService<Driver> {
             }
         } catch (NullPointerException e) {
             System.out.println("Driver not found.");
+        } catch (Exception e) {
+            System.out.println("Something went wrong.");
+            e.printStackTrace();
         }
         
     }
@@ -91,18 +108,29 @@ public class CabServiceImpl implements CabService<Driver> {
      * @param users
      * @returns the total bill of the ride.
      */
-    public int calculateBill(String userName, Map<String, Driver> drivers, Map<String, User> users) {
-        Double distance = distanceBetweenLocations(rides.get(userName).getSource(), rides.get(userName).getDestination());
-        int bill = (int) (distance * COST_PER_UNIT_DISTANCE);
-        updateDriverLocation(rides.get(userName), drivers);
-        updateUserLocation(userName, users);
-        addRideEarningToDriverTotalEarning(rides.get(userName), bill);
-        rides.remove(userName);
-        return bill;
+    public void calculateBill(String userName, Map<String, Driver> drivers, Map<String, User> users) {
+        try {
+            Double distance = distanceBetweenLocations(rides.get(userName).getSource(), rides.get(userName).getDestination());
+            int bill = (int) (distance * COST_PER_UNIT_DISTANCE);
+            updateDriverLocation(rides.get(userName), drivers);
+            updateUserLocation(userName, users);
+            addRideEarningToDriverTotalEarning(rides.get(userName), bill);
+            rides.remove(userName);
+            System.out.println("ride Ended bill amount $ " + bill);
+        } catch (Exception e) {
+            System.out.println("Something went wrong");
+            e.printStackTrace();
+        }
     }
 
-    public Map<String, Integer> findTotalEarnings() {
-        return this.earnings;
+    public void findTotalEarnings() {
+        try {
+            for(Map.Entry<String, Integer> earning : earnings.entrySet()) {
+                System.out.println(earning.getKey() + " earn $" + earning.getValue());
+            }
+        } catch (NullPointerException e) {
+            System.out.println("No earnings till now.");
+        }
     }
     
 }

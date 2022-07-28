@@ -16,12 +16,11 @@ public class DriverService implements ModelService<Driver> {
         this.drivers.put(driver.getName(), driver);   
     }
 
-    public void updateDriverLocation(String name, Pair<Float, Float> location) throws NullPointerException {
+    public void updateDriverLocation(String name, Pair<Float, Float> location) {
         try {
             this.drivers.get(name).setLocation(location);
         } catch (NullPointerException e) {
             System.out.println("Driver not found in the database. Should add it as a new driver first.");
-            throw e;
         }
     }
 
@@ -30,7 +29,6 @@ public class DriverService implements ModelService<Driver> {
             this.drivers.get(name).setAvailability(status);
         } catch (NullPointerException e) {
             System.out.println("Driver not found in the database. Should add it as a new driver first.");
-            throw e;
         }
     }
 

@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Driver extends Person{
-    
     @Getter @Setter private Vehicle vehicle;
     @Getter @Setter private boolean availability = true; 
 
