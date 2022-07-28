@@ -18,4 +18,8 @@ public class Driver extends Person{
     Driver(String name, String gender, int age, Pair<Float, Float> location) {
         super(name, gender, age, location);
     }
+
+    public boolean getAvailabity() {
+        return this.availability;
+    }
 }

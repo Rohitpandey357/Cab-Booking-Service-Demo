@@ -12,5 +12,4 @@ import org.springframework.data.util.Pair;
 public interface CabService<T> {
     public List<T> findRide(String userName, Pair<Float, Float> source, Pair<Float, Float> destination, Map<String, T> drivers);
     public void chooseRide(String userName, String driverName, Map<String, T> drivers);
-    public int calculateBill();
 }
