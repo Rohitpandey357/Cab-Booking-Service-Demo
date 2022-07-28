@@ -2,8 +2,6 @@ package com.example.cabbookingservice.modelservices;
 
 import java.util.Map;
 
-import org.springframework.data.util.Pair;
-
 import com.example.cabbookingservice.models.Driver;
 
 import lombok.Getter;
@@ -16,9 +14,9 @@ public class DriverService implements ModelService<Driver> {
         this.drivers.put(driver.getName(), driver);   
     }
 
-    public void updateDriverLocation(String name, Pair<Float, Float> location) {
+    public void updateDriverLocation(String name) {
         try {
-            this.drivers.get(name).setLocation(location);
+            System.out.println(drivers.get(name).getLocation());
         } catch (NullPointerException e) {
             System.out.println("Driver not found in the database. Should add it as a new driver first.");
         }

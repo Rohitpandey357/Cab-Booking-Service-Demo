@@ -14,8 +14,8 @@ public class CabBookingController {
     private DriverService driverService = new DriverService();
     private CabServiceImpl cabService = new CabServiceImpl();
 
-    public void addUser(String name, String gender, int age, Pair<Float, Float> location) {
-        userService.add(new User(name, gender, age, location));
+    public void addUser(String name, String gender, int age) {
+        userService.add(new User(name, gender, age));
     }
 
     public void updateUser(String userName, String updatedContact) {
@@ -27,16 +27,15 @@ public class CabBookingController {
     }
 
     public void addDriver(String name, String gender, int age, String vehicleName, String vehicleNumber, Pair<Float, Float> location) {
-        Driver driver = new Driver(new Vehicle(vehicleName, vehicleNumber), true);
+        Driver driver = new Driver(new Vehicle(vehicleName, vehicleNumber), true, location);
         driver.setAge(age);
         driver.setGender(gender);
-        driver.setLocation(location);
         driver.setName(name);
         driverService.add(driver);
     }
 
-    public void updateDriverLocation(String name, Pair<Float, Float> location) {
-        driverService.updateDriverLocation(name, location);
+    public void updateDriverLocation(String name) {
+        driverService.updateDriverLocation(name);
     }
 
     public void changeDriverStatus(String name, boolean status) {

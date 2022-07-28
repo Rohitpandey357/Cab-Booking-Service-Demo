@@ -1,7 +1,5 @@
 package com.example.cabbookingservice.models;
 
-import org.springframework.data.util.Pair;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +11,4 @@ public class Person {
     @Getter @Setter private String name;
     @Getter @Setter private String gender;
     @Getter @Setter private int age;
-    @Getter @Setter private Pair<Float, Float> location;
 }

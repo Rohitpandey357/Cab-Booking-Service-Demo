@@ -13,9 +13,9 @@ import lombok.Setter;
 public class Driver extends Person{
     @Getter @Setter private Vehicle vehicle;
     @Getter @Setter private boolean availability = true; 
-
-    Driver(String name, String gender, int age, Pair<Float, Float> location) {
-        super(name, gender, age, location);
+    @Getter @Setter private Pair<Float, Float> location;
+    Driver(String name, String gender, int age) {
+        super(name, gender, age);
     }
 
     public boolean getAvailabity() {
