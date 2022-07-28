@@ -13,7 +13,7 @@ import lombok.Setter;
 public class Driver extends Person{
     
     @Getter @Setter private Vehicle vehicle;
-    @Getter @Setter private boolean available = true; 
+    @Getter @Setter private boolean availability = true; 
 
     Driver(String name, String gender, int age, Pair<Float, Float> location) {
         super(name, gender, age, location);
