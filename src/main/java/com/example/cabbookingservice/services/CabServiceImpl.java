@@ -116,17 +116,20 @@ public class CabServiceImpl implements CabService<Driver> {
             updateUserLocation(userName, users);
             addRideEarningToDriverTotalEarning(rides.get(userName), bill);
             rides.remove(userName);
-            System.out.println("ride Ended bill amount $ " + bill);
+            System.out.println("Ride Ended bill amount $" + bill);
         } catch (Exception e) {
             System.out.println("Something went wrong");
             e.printStackTrace();
         }
     }
 
-    public void findTotalEarnings() {
+    public void findTotalEarnings(Map<String, Driver> drivers) {
         try {
-            for(Map.Entry<String, Integer> earning : earnings.entrySet()) {
-                System.out.println(earning.getKey() + " earn $" + earning.getValue());
+            for(Map.Entry<String, Driver> driver : drivers.entrySet()) {
+                if(earnings.containsKey(driver.getKey()) == false) {
+                    earnings.put(driver.getKey(), 0);
+                } 
+                System.out.println(driver.getKey() + " earn $" + earnings.get(driver.getKey()));
             }
         } catch (NullPointerException e) {
             System.out.println("No earnings till now.");

@@ -55,6 +55,6 @@ public class CabBookingController {
     }
 
     public void findTotalEarnings() {
-        cabService.findTotalEarnings();
+        cabService.findTotalEarnings(driverService.getDrivers());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.cabbookingservice;
 
+import java.io.FileInputStream;
 import java.util.Scanner;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,8 @@ public class CabbookingserviceApplication {
 
 	public static void main(String[] args) {
 		try {
-			Scanner sc=new Scanner(args[0]);    //file to be scanned  
+			FileInputStream fis=new FileInputStream(args[0]);       
+			Scanner sc=new Scanner(fis);   //file to be scanned  
 			InputParser inputParser = new InputParser();
 			while(sc.hasNextLine())  {  
 				inputParser.parseInput(sc.nextLine());
