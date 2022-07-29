@@ -19,6 +19,7 @@ You can run the solution by following the below steps:
 3) Running the solution: After successfully building the solution, go into the target directory by using the following command : cd target
 
 Once you get into the target directory run the following command to run the solution on the input file : 
+
 java -jar cabbookingservice-0.0.1-SNAPSHOT.jar <path_to_input_file>
 
 There is a sampleinput.txt file in src/main/resources directory. You can try with that also.
