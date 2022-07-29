@@ -11,25 +11,40 @@ import lombok.Setter;
 public class DriverService implements ModelService<Driver> {
     @Getter @Setter Map<String, Driver> drivers = new HashMap<>();
 
-    public void add(Driver driver) {
-        drivers.put(driver.getName(), driver);   
-        System.out.println("Driver added successfully.");
-    }
-
-    public void updateDriverLocation(String name) {
+    public void add(Driver driver) throws NullPointerException {
         try {
-            System.out.println(drivers.get(name).getLocation());
+            drivers.put(driver.getName(), driver);   
+            System.out.println("Driver added successfully.");
         } catch (NullPointerException e) {
-            System.out.println("Driver not found in the database. Should add it as a new driver first.");
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
-    public void changeDriverStatus(String name, boolean status) {
+    public void updateDriverLocation(String name) throws NullPointerException {
         try {
-            drivers.get(name).setAvailability(status);
-            System.out.println("Driver's availabitity changed to = " + status);
+            if(drivers.containsKey(name)) {    
+                System.out.println(drivers.get(name).getLocation());
+            } else {
+                System.out.println("Driver not found in the database. Should add it as a new driver first.");
+            }
         } catch (NullPointerException e) {
-            System.out.println("Driver not found in the database. Should add it as a new driver first.");
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
+    public void changeDriverStatus(String name, boolean status) throws NullPointerException {
+        try {
+            if(drivers.containsKey(name)) {
+                drivers.get(name).setAvailability(status);
+                System.out.println("Driver's availabitity changed to = " + status);
+            } else {
+                System.out.println("Driver not found in the database. Should add it as a new driver first.");
+            }
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 

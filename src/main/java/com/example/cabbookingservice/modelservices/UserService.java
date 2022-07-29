@@ -15,28 +15,43 @@ import lombok.Setter;
 public class UserService implements ModelService<User> {
     @Getter @Setter private Map<String, User> users = new HashMap<>();
 
-    public void add(User user) {
-        this.users.put(user.getName(), user);  
-        System.out.println("User added successfully.");
-    }
-
-    public void updateUser(String name, String updatedContact) {
+    public void add(User user) throws NullPointerException {
         try {
-            this.users.get(name).setContactNumber(updatedContact);
-            System.out.println("User updated successfully.");
+            users.put(user.getName(), user);  
+            System.out.println("User added successfully.");
         } catch (NullPointerException e) {
-            // User not found
-            System.out.println("User not found in the database. Should add it as a new user first.");
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
-    public void updateUserLocation(String name, Pair<Float, Float> location) {
+    public void updateUser(String name, String updatedContact) throws NullPointerException {
         try {
-            this.users.get(name).setLocation(location);
-            System.out.println("User's location set to -> (" + location.getFirst() + "," + location.getSecond() + ")");
+            if(users.containsKey(name)) {
+                users.get(name).setContactNumber(updatedContact);
+                System.out.println("User updated successfully.");
+            } else {
+                // User not found
+                System.out.println("User not found in the database. Should add it as a new user first.");
+            }
         } catch (NullPointerException e) {
-            // User not found
-            System.out.println("User not found in the database. Should add it as a new user first.");
+            System.out.println(e.getMessage());
+            throw e;
+        }
+    }
+
+    public void updateUserLocation(String name, Pair<Float, Float> location) throws NullPointerException {
+        try {
+            if(users.containsKey(name)) {
+                users.get(name).setLocation(location);
+                System.out.println("User's location set to -> (" + location.getFirst() + "," + location.getSecond() + ")");
+            } else {
+                // User not found
+                System.out.println("User not found in the database. Should add it as a new user first.");
+            }
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 }

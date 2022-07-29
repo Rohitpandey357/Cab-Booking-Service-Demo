@@ -5,12 +5,9 @@ import org.springframework.data.util.Pair;
 import com.example.cabbookingservice.controller.CabBookingController;
 
 public class InputParser {
-    private final CabBookingController cabBookingController = new CabBookingController();
+    private CabBookingController cabBookingController = new CabBookingController();
 
-    public void parseInput(String input) {
-        if (input.length() == 0) {
-            return;
-        }
+    public void parseInput(String input) throws NullPointerException {
 
         try {
             input = input.replaceAll(" ", "");
@@ -57,9 +54,9 @@ public class InputParser {
             } else {   
                 System.out.println("Invalid input.");
             }
-        } catch (Exception e) {
-            System.out.println("Invalid input -> " + input);
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 }

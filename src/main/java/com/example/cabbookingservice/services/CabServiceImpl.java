@@ -31,7 +31,7 @@ public class CabServiceImpl implements CabService<Driver> {
      * This function finds the drivers which are less than 5 unit distance and prints them
      */
     public List<Driver> findRide(String userName, Pair<Float, Float> source, 
-                                    Pair<Float, Float> destination, Map<String, Driver> drivers) {
+                        Pair<Float, Float> destination, Map<String, Driver> drivers) throws NullPointerException {
         
         List<Driver> availableDrivers = new ArrayList<>();
         try {
@@ -51,9 +51,9 @@ public class CabServiceImpl implements CabService<Driver> {
             }
     
             rides.put(userName, new Ride(userName, Null, source, destination));
-        } catch (Exception e) {
-            System.out.println("Something went wrong. Please try again");
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
         return availableDrivers;
     }
@@ -66,7 +66,7 @@ public class CabServiceImpl implements CabService<Driver> {
      * @param driverName
      * @param drivers
      */
-    public void chooseRide(String userName, String driverName, Map<String, Driver> drivers) {
+    public void chooseRide(String userName, String driverName, Map<String, Driver> drivers) throws NullPointerException {
         try {
             if (drivers.get(driverName).getAvailabity() == true) {
                 rides.get(userName).setDriverName(driverName);
@@ -75,27 +75,40 @@ public class CabServiceImpl implements CabService<Driver> {
                 System.out.println("Driver not available.");
             }
         } catch (NullPointerException e) {
-            System.out.println("Driver not found.");
-        } catch (Exception e) {
-            System.out.println("Something went wrong.");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            throw e;
         }
         
     }
 
-    private void updateUserLocation(String userName, Map<String,User> users) {
-        users.get(userName).setLocation(rides.get(userName).getDestination());
+    private void updateUserLocation(String userName, Map<String,User> users) throws NullPointerException {
+        try {
+            users.get(userName).setLocation(rides.get(userName).getDestination());
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
-    private void updateDriverLocation(Ride ride, Map<String, Driver> drivers) {
-        drivers.get(ride.getDriverName()).setLocation(ride.getDestination());
+    private void updateDriverLocation(Ride ride, Map<String, Driver> drivers) throws NullPointerException {
+        try {
+            drivers.get(ride.getDriverName()).setLocation(ride.getDestination());
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
-    private void addRideEarningToDriverTotalEarning(Ride ride, int bill) {
-        if (earnings.containsKey(ride.getDriverName())) {
-            earnings.put(ride.getDriverName(), earnings.get(ride.getDriverName()) + bill);
-        } else {
-            earnings.put(ride.getDriverName(), bill);
+    private void addRideEarningToDriverTotalEarning(Ride ride, int bill) throws NullPointerException {  
+        try {
+            if (earnings.containsKey(ride.getDriverName())) {
+                earnings.put(ride.getDriverName(), earnings.get(ride.getDriverName()) + bill);
+            } else {
+                earnings.put(ride.getDriverName(), bill);
+            }
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -108,22 +121,24 @@ public class CabServiceImpl implements CabService<Driver> {
      * @param users
      * @returns the total bill of the ride.
      */
-    public void calculateBill(String userName, Map<String, Driver> drivers, Map<String, User> users) {
+    public int calculateBill(String userName, Map<String, Driver> drivers, Map<String, User> users) throws NullPointerException {
+        int bill = 0;
         try {
             Double distance = distanceBetweenLocations(rides.get(userName).getSource(), rides.get(userName).getDestination());
-            int bill = (int) (distance * COST_PER_UNIT_DISTANCE);
+            bill = (int) (distance * COST_PER_UNIT_DISTANCE);
             updateDriverLocation(rides.get(userName), drivers);
             updateUserLocation(userName, users);
             addRideEarningToDriverTotalEarning(rides.get(userName), bill);
             rides.remove(userName);
             System.out.println("Ride Ended bill amount $" + bill);
-        } catch (Exception e) {
-            System.out.println("Something went wrong");
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
+        return bill;
     }
 
-    public void findTotalEarnings(Map<String, Driver> drivers) {
+    public Map<String, Integer> findTotalEarnings(Map<String, Driver> drivers) throws NullPointerException {
         try {
             for(Map.Entry<String, Driver> driver : drivers.entrySet()) {
                 if(earnings.containsKey(driver.getKey()) == false) {
@@ -132,8 +147,10 @@ public class CabServiceImpl implements CabService<Driver> {
                 System.out.println(driver.getKey() + " earn $" + earnings.get(driver.getKey()));
             }
         } catch (NullPointerException e) {
-            System.out.println("No earnings till now.");
+            System.out.println(e.getMessage());
+            throw e;
         }
+        return earnings;
     }
     
 }

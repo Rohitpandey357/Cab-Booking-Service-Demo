@@ -26,12 +26,18 @@ public class CabBookingController {
         userService.updateUserLocation(userName, location);
     }
 
-    public void addDriver(String name, String gender, int age, String vehicleName, String vehicleNumber, Pair<Float, Float> location) {
-        Driver driver = new Driver(new Vehicle(vehicleName, vehicleNumber), true, location);
-        driver.setAge(age);
-        driver.setGender(gender);
-        driver.setName(name);
-        driverService.add(driver);
+    public void addDriver(String name, String gender, int age, String vehicleName, String vehicleNumber, 
+                                Pair<Float, Float> location) throws NullPointerException {
+        try {
+            Driver driver = new Driver(new Vehicle(vehicleName, vehicleNumber), true, location);
+            driver.setAge(age);
+            driver.setGender(gender);
+            driver.setName(name);
+            driverService.add(driver);
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
     public void updateDriverLocation(String name) {
