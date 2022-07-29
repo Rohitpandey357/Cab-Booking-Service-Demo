@@ -10,6 +10,8 @@ import com.example.cabbookingservice.models.Driver;
 import com.example.cabbookingservice.models.User;
 import com.example.cabbookingservice.services.pojo.Ride;
 
+import lombok.Getter;
+
 public class CabServiceImpl implements CabService<Driver> { 
 
     private static final String Null = null;
@@ -17,8 +19,8 @@ public class CabServiceImpl implements CabService<Driver> {
     private final int MAXIMUM_RANGE_FOR_A_DRIVER_TO_BE_AVAILABLE = 5;    
     private final int COST_PER_UNIT_DISTANCE = 10; 
 
-    private Map<String, Integer> earnings = new HashMap<>();
-    private Map<String, Ride> rides = new HashMap<>();
+    @Getter private Map<String, Integer> earnings = new HashMap<>();
+    @Getter private Map<String, Ride> rides = new HashMap<>();
 
     // This function returns distance between user and driver.
     private double distanceBetweenLocations(Pair<Float, Float> location1, Pair<Float, Float> location2) {
